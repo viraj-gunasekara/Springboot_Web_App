@@ -3,6 +3,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import { TextField, Button, InputAdornment, IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 
 const initialValues = { email: "", password: "" };
 const validationSchema = Yup.object().shape({
@@ -15,6 +16,8 @@ const validationSchema = Yup.object().shape({
 const Login = () => {
   // const [formValue, setFormValue] = useState();
   const [showPassword, setShowPassword] = useState(false);
+  // const dispatch=useDispatch();
+  const navigate=useNavigate();
 
   const handleSubmit = (values) => {
     console.log("handle submit", values);
@@ -89,6 +92,10 @@ const Login = () => {
           </Button>
         </Form>
       </Formik>
+      <div className="flex gap-2 items-center justify-center pt-5">
+        <p>Don't Have An Account ?</p>
+        <Button onClick={()=> navigate("/register")}>Register</Button>
+      </div>
     </>
   );
 };
