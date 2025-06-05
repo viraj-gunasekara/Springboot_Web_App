@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { TextField, Button } from "@mui/material";
+import { TextField, Button, InputAdornment, IconButton } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import * as Yup from "yup";
 
 const initialValues = { firstName:"", lastName:"", email: "", password: "" };
@@ -14,11 +15,17 @@ const validationSchema = Yup.object().shape({
 });
 
 const Register = () => {
-  const [formValue, setFormValue] = useState();
+  // const [formValue, setFormValue] = useState();
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = (values) => {
     console.log("handle submit", values);
   };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+
   return (
     <>
       <Formik
@@ -78,9 +85,21 @@ const Register = () => {
                 as={TextField}
                 name="password"
                 placeholder="Enter your Password"
-                type="password"
+                type= {showPassword ? "text" : "password"}
                 varient="outlined"
                 fullWidth
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={togglePasswordVisibility}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
               <ErrorMessage
                 name="password"
