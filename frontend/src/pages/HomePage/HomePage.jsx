@@ -11,7 +11,7 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import HomeRight from "../../components/HomeRight/HomeRight";
 
 const HomePage = () => {
-  const location=useLocation();
+  const location = useLocation();
 
   return (
     <div className="px-20">
@@ -26,25 +26,33 @@ const HomePage = () => {
           item
           className="px-5 flex justify-center"
           xs={12}
-          lg={location.pathname === "/" ? 6.8:9}
+          lg={location.pathname === "/" ? 6.8 : 9}
         >
           <Routes>
-            <Route path="/" element={<MiddlePart/>}/>
-            <Route path="/status" element={<WorkoutStatus/>}/>  {/* Anjana */}
-            <Route path="/create-status" element={<CreateWorkoutStatus/>}/>  {/* Anjana */}
-            <Route path="/create-workout-plan" element={<CreateWorkoutPlan/>}/>  {/* Wije */}
-            <Route path="/create-meal-plan" element={<CreateMealPlan/>}/>  {/* Hasri */}
-            <Route path="/profile/:id" element={<Profile/>}/>
+            <Route path="/" element={<MiddlePart />} />
+            <Route path="/status" element={<WorkoutStatus />} /> {/* Anjana */}
+            <Route
+              path="/create-status"
+              element={<CreateWorkoutStatus />}
+            />{" "}
+            {/* Anjana */}
+            <Route
+              path="/create-workout-plan"
+              element={<CreateWorkoutPlan />}
+            />{" "}
+            {/* Wije */}
+            <Route path="/create-meal-plan" element={<CreateMealPlan />} />{" "}
+            {/* Hasri */}
+            <Route path="/profile/:id" element={<Profile />} />
           </Routes>
-          
         </Grid>
-        
-        <Grid item lg={2.7} relative>
-          <div className="sticky top-0 w-full">
-            <HomeRight/>
-          </div>
-
-        </Grid>
+        {location.pathname === "/" && (
+          <Grid item lg={2.7} relative>
+            <div className="sticky top-0 w-full">
+              <HomeRight />
+            </div>
+          </Grid>
+        )}
       </Grid>
     </div>
   );
