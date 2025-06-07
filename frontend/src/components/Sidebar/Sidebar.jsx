@@ -24,7 +24,7 @@ const Sidebar = () => {
         <div className='space-y-8'>
           {navigationMenu.map((item)=> <div className='flex space-x-3 items-center cursor-pointer'>
             {item.icon}
-            <p className='text-xl'>{item.title}</p>
+            <p className='text-base'>{item.title}</p>
             </div>)}
         </div>
       </div>
@@ -35,8 +35,8 @@ const Sidebar = () => {
 
             <Avatar src='https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png'/>
             <div>
-              <p className='font-bold'>PAF GROUP 36</p>
-              <p className='opacity-70'>@reg_we_36</p>
+            <p className='font-bold' style={{ fontSize: '14px' }}>PAF GROUP 36</p>
+            <p className='opacity-70' style={{ fontSize: '13px' }}>@reg_we_36</p>
             </div>
           </div>
 
@@ -59,7 +59,7 @@ const Sidebar = () => {
         }}
         
       >
-        <div  style={{ width: '100px' }}>
+        <div  style={{ width: '100px', fontSize: '12px' }}>
         <MenuItem onClick={handleClose}>Profile</MenuItem>
         <MenuItem onClick={handleClose}>Logout</MenuItem>
         </div>

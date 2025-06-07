@@ -18,7 +18,7 @@ export const navigationMenu=[
         path:"/"
     },
     {
-        title:"Workout Status",
+        title:"View Workout Status",
         icon:<WorkoutStatus/>,
         path:"/"
     },

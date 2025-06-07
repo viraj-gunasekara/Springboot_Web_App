@@ -8,6 +8,7 @@ import CreateWorkoutPlan from "../../components/CreateWorkoutPlan/CreateWorkoutP
 import CreateMealPlan from "../../components/CreateMealPlan/CreateMealPlan";
 import Profile from "../Profile/Profile";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import HomeRight from "../../components/HomeRight/HomeRight";
 
 const HomePage = () => {
   const location=useLocation();
@@ -15,7 +16,7 @@ const HomePage = () => {
   return (
     <div className="px-20">
       <Grid container spacing={0}>
-        <Grid item lg={3}>
+        <Grid item xs={0} lg={2.5}>
           <div className="sticky top-0">
             <Sidebar />
           </div>
@@ -25,7 +26,7 @@ const HomePage = () => {
           item
           className="px-5 flex justify-center"
           xs={12}
-          lg={location.pathname === "/" ? 9:12}
+          lg={location.pathname === "/" ? 6.8:9}
         >
           <Routes>
             <Route path="/" element={<MiddlePart/>}/>
@@ -36,6 +37,13 @@ const HomePage = () => {
             <Route path="/profile/:id" element={<Profile/>}/>
           </Routes>
           
+        </Grid>
+        
+        <Grid item lg={2.7} relative>
+          <div className="sticky top-0 w-full">
+            <HomeRight/>
+          </div>
+
         </Grid>
       </Grid>
     </div>
