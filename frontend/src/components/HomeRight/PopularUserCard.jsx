@@ -8,7 +8,7 @@ const PopularUserCard = () => {
     <div>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[400], width: 32, height: 32 }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: red[500], width: 32, height: 32 }} aria-label="recipe">
             V
           </Avatar>
         }
@@ -18,7 +18,7 @@ const PopularUserCard = () => {
           </Button>
         }
         title="V.S. Gunasekara"
-        subheader="@virajSg"
+        subheader="@it21320378"
       />
     </div>
   )

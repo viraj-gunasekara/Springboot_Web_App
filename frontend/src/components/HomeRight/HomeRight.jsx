@@ -14,7 +14,7 @@ const HomeRight = () => {
     }
 
   return (
-    <div className="py-5 sticky top mt-5">
+    <div className="py-5 sticky top">
         <div className="relative flex items-center">
             <input type="text" placeholder="search user" className="py-3 rounded-full text-gray-500 pl-12 w-full bg-slate-100"/>
             
