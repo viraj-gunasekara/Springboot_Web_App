@@ -15,31 +15,31 @@ export const navigationMenu=[
     {
         title:"Notifications",
         icon:<NotificationsIcon/>,
-        path:"/"
+        path:"/notifications"
     },
     {
         title:"View Workout Status",
         icon:<WorkoutStatus/>,
-        path:"/"
+        path:"/status"
     },
     {
         title:"Create Workout Status",
         icon:<CreateWorkoutStatus/>,
-        path:"/"
+        path:"/create-status"
     },
     {
         title:"Create Workout Plan",
         icon:<CreateWorkoutPlan/>,
-        path:"/"
+        path:"/create-workout-plan"
     },
     {
         title:"Create Meal Plan",
         icon:<CreateMealPlan/>,
-        path:"/"
+        path:"/create-meal-plan"
     },
     {
         title:"Profile",
         icon:<ProfileIcon/>,
-        path:"/"
+        path:"/profile/:id"
     },
 ]
