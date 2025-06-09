@@ -2,21 +2,26 @@ import React from "react";
 import { navigationMenu } from "./SidebarNavigation";
 import { Divider, Avatar, Button, Menu, MenuItem, Card } from "@mui/material";
 import MoreVertTwoToneIcon from "@mui/icons-material/MoreVertTwoTone";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const handleMenuItemClick = (path) => {
-    navigate(path);
-    handleClose(); // Close the menu after navigation
+
+  const handleNavigate = (item) => {
+    if (item.title === "Profile") {
+      // navigate(`/profile/${auth.user?.id}`)
+      navigate(`/profile/:id`);
+    } else {
+      navigate(item.path);
+    }
   };
 
   return (
@@ -28,7 +33,10 @@ const Sidebar = () => {
 
         <div className="space-y-8">
           {navigationMenu.map((item) => (
-            <div onClick={()=>navigate(item.path)} className="flex space-x-3 items-center cursor-pointer">
+            <div
+              onClick={() => handleNavigate(item)}
+              className="flex space-x-3 items-center cursor-pointer"
+            >
               {item.icon}
               <p className="text-base">{item.title}</p>
             </div>
@@ -69,7 +77,6 @@ const Sidebar = () => {
             }}
           >
             <div style={{ width: "100px", fontSize: "12px" }}>
-            <MenuItem onClick={() => handleMenuItemClick("/profile/:id")}>Profile</MenuItem>
               <MenuItem onClick={handleClose}>Logout</MenuItem>
             </div>
           </Menu>
