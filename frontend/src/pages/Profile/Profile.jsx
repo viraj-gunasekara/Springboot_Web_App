@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 // import { useParams } from "react-router-dom";
 import { Avatar, Button, Tabs, Tab, Box, Card } from "@mui/material";
 import PostCard from "../../components/Post/PostCard";
+import ProfileModal from "./ProfileModal";
 
 const Profile = () => {
   // const { id } = useParams();
+  const [open, setOpen] = useState(false);
+  const handleOpenProfileModal = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const tabs = [
     { value: "post", name: "Posts" },
     { value: "workoutStatus", name: "My Workout Status" },
@@ -33,12 +37,16 @@ const Profile = () => {
         <div className="px-5 flex justify-between items-start mt-5 h-[5rem]">
           <Avatar
             className="transform -translate-y-24"
-            sx={{ width: "10rem", height: "10rem" }}
+            sx={{ width: "10rem", height: "10rem", border:"4px solid white" }}
             src="https://images.pexels.com/photos/1431282/pexels-photo-1431282.jpeg?auto=compress&cs=tinysrgb&w=600"
           />
 
           {true ? (
-            <Button sx={{ borderRadius: "20px" }} variant="outlined">
+            <Button
+              sx={{ borderRadius: "20px" }}
+              variant="outlined"
+              onClick={handleOpenProfileModal}
+            >
               Edit Profile
             </Button>
           ) : (
@@ -89,6 +97,10 @@ const Profile = () => {
           </div>
         </section>
       </div>
+      {/* profileModel */}
+      <section>
+        <ProfileModal open={open} handleClose={handleClose} />
+      </section>
     </Card>
   );
 };
