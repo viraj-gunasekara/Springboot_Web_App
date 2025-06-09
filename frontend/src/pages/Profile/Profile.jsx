@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Avatar, Button, Tabs, Tab, Box, Card } from "@mui/material";
 import PostCard from "../../components/Post/PostCard";
 import ProfileModal from "./ProfileModal";
+import UserStatusCard from "../../components/WorkoutStatus/UserStatusCard";
 
 const Profile = () => {
   // const { id } = useParams();
@@ -17,6 +18,9 @@ const Profile = () => {
   ];
 
   const posts = [1, 1, 1, 1];
+  const workoutStatuss= [1,1,1,1,1];
+  const savedPosts= [1,1];
+  const sharedPosts= [1];
 
   const [value, setValue] = React.useState("post");
 
@@ -91,7 +95,25 @@ const Profile = () => {
                   </div>
                 ))}
               </div>
-            ) : (
+            ) : value==="workoutStatus"?<div className="w-[31rem] flex items-center justify-center flex-wrap my-10 gap-2">
+{workoutStatuss.map((item)=><div className={workoutStatuss.length % 2 !== 0 ? "mr-auto" : "ml-auto"}><UserStatusCard/></div>)}
+            </div> : value === "saved" ? (
+              <div className="space-y-5 w-[80%] my-10">
+                {savedPosts.map((item) => (
+                  <div className="border border-slate-100 rounded-md">
+                    <PostCard />
+                  </div>
+                ))}
+              </div>
+            ) : value === "share" ? (
+              <div className="space-y-5 w-[80%] my-10">
+                {sharedPosts.map((item) => (
+                  <div className="border border-slate-100 rounded-md">
+                    <PostCard />
+                  </div>
+                ))}
+              </div>
+            ) :(
               ""
             )}
           </div>
