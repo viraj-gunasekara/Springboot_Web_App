@@ -9,6 +9,7 @@ import CreateMealPlan from "../../components/CreateMealPlan/CreateMealPlan";
 import Profile from "../Profile/Profile";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import HomeRight from "../../components/HomeRight/HomeRight";
+import Notifications from "../../components/Notifications/Notifications";
 
 const HomePage = () => {
   const location = useLocation();
@@ -30,6 +31,7 @@ const HomePage = () => {
         >
           <Routes>
             <Route path="/" element={<MiddlePart />} />
+            <Route path="/notifications" element={<Notifications />} />
             <Route path="/status" element={<WorkoutStatus />} /> {/* Anjana */}
             <Route
               path="/create-status"
