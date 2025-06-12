@@ -37,8 +37,24 @@ const CreatePostModal = ({ handleClose, open }) => {
     setSelectedImage(imageUrl);
     setIsLoading(false);
     formik.setFieldValue("image", imageUrl);
+    // If a video is already selected, reset it
+    if (selectedVideo) {
+        setSelectedVideo(null);
+        formik.setFieldValue("video", "");
+      }
   };
-  const handleSelectVideo = () => {};
+  const handleSelectVideo = async (event) => {
+    setIsLoading(true);
+    const videoUrl = await uploadToCloudinary(event.target.files[0], "video");
+    setSelectedVideo(videoUrl);
+    setIsLoading(false);
+    formik.setFieldValue("video", videoUrl);
+    // If an image is already selected, reset it
+    if (selectedImage) {
+        setSelectedImage(null);
+        formik.setFieldValue("image", "");
+      }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -102,7 +118,7 @@ const CreatePostModal = ({ handleClose, open }) => {
                   id="video-input"
                 />
                 <label htmlFor="video-input">
-                  <IconButton color="primary">
+                  <IconButton color="primary" component="span">
                     <VideoIcon />
                   </IconButton>
                 </label>
@@ -112,6 +128,11 @@ const CreatePostModal = ({ handleClose, open }) => {
             {selectedImage && (
               <div>
                 <img className="h-[10rem]" src={selectedImage} alt="" />
+              </div>
+            )}
+            {selectedVideo && (
+              <div>
+                <video className="h-[10rem]" src={selectedVideo} alt="" />
               </div>
             )}
             <div className="flex w-full justify-end">
