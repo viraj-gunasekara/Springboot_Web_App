@@ -27,35 +27,111 @@ const style = {
 };
 
 const CreatePostModal = ({ handleClose, open }) => {
-  const [selectedImage, setSelectedImage] = useState();
-  const [selectedVideo, setSelectedVideo] = useState();
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedVideos, setSelectedVideos] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSelectImage = async (event) => {
+  //-------------------------------
+  const handleSelectImages = async (event) => {
     setIsLoading(true);
-    const imageUrl = await uploadToCloudinary(event.target.files[0], "image");
-    setSelectedImage(imageUrl);
+    const files = event.target.files;
+    const imageUrls = [];
+
+    if (files.length > 3) {
+      setIsLoading(false);
+      alert("You can only upload up to 3 images at a time.");
+      return;
+    }
+
+    for (let i = 0; i < files.length; i++) {
+      if (i < 3) {
+        const imageUrl = await uploadToCloudinary(files[i], "image");
+        imageUrls.push(imageUrl);
+      }
+    }
+
+    setSelectedImages(imageUrls);
     setIsLoading(false);
-    formik.setFieldValue("image", imageUrl);
+
+    // formik.setFieldValue("image", imageUrls);
     // If a video is already selected, reset it
-    if (selectedVideo) {
-        setSelectedVideo(null);
-        formik.setFieldValue("video", "");
-      }
-  };
-  const handleSelectVideo = async (event) => {
-    setIsLoading(true);
-    const videoUrl = await uploadToCloudinary(event.target.files[0], "video");
-    setSelectedVideo(videoUrl);
-    setIsLoading(false);
-    formik.setFieldValue("video", videoUrl);
-    // If an image is already selected, reset it
-    if (selectedImage) {
-        setSelectedImage(null);
-        formik.setFieldValue("image", "");
-      }
+    if (selectedVideos.length > 0) {
+      setSelectedVideos([]);
+      formik.setFieldValue("video", "");
+    }
   };
 
+  //----------------------------------------
+
+  const handleSelectVideos = async (event) => {
+    setIsLoading(true);
+    const files = event.target.files;
+    const videoUrls = [];
+
+    if (files.length > 3) {
+      setIsLoading(false);
+      alert("You can only upload up to 3 videos at a time.");
+      return;
+    }
+
+    let uploadCount = 0;
+
+    //====================
+
+    const handleMetadataLoaded = (file, video) => {
+      return function () {
+        window.URL.revokeObjectURL(video.src);
+        if (video.duration <= 30) {
+          uploadToCloudinary(file, "video").then((videoUrl) => {
+            videoUrls.push(videoUrl);
+            uploadCount++;
+
+            if (
+              uploadCount === files.length ||
+              videoUrls.length === files.length
+            ) {
+              setSelectedVideos([...videoUrls]); // Update state after all uploads are completed
+              setIsLoading(false); // Hide loading spinner when all uploads are completed
+            }
+          });
+        } else {
+          alert(
+            `Video ${file.name} is longer than 30 seconds and will not be uploaded.`
+          );
+
+          uploadCount++;
+
+          if (
+            uploadCount === files.length ||
+            videoUrls.length === files.length - 1
+          ) {
+            setIsLoading(false); // Hide loading spinner if all uploads are completed except for the current one
+          }
+        }
+      };
+    };
+
+    //================
+
+    for (let i = 0; i < files.length; i++) {
+      if (i < 3) {
+        const file = files[i];
+        // Check video length
+        const video = document.createElement("video");
+        video.preload = "metadata";
+        video.onloadedmetadata = handleMetadataLoaded(file, video);
+        video.src = URL.createObjectURL(file);
+      }
+    }
+
+    // Reset image selection if any images were previously selected
+    if (selectedImages.length > 0) {
+      setSelectedImages([]);
+      formik.setFieldValue("image", "");
+    }
+  };
+
+  //==============================
   const formik = useFormik({
     initialValues: {
       caption: "",
@@ -70,7 +146,17 @@ const CreatePostModal = ({ handleClose, open }) => {
   return (
     <Modal
       open={open}
-      onClose={handleClose}
+    //   onClose={handleClose}
+    onClose={() => {
+        if (
+          (selectedImages.length > 0 || selectedVideos.length > 0) &&
+          window.confirm(
+            "You have unsaved uploads. Are you sure you want to discard them?"
+          )
+        ) {
+          handleClose();
+        }
+      }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
@@ -98,7 +184,8 @@ const CreatePostModal = ({ handleClose, open }) => {
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={handleSelectImage}
+                  onChange={handleSelectImages}
+                  multiple //select multiple images
                   style={{ display: "none" }}
                   id="image-input"
                 />
@@ -113,7 +200,8 @@ const CreatePostModal = ({ handleClose, open }) => {
                 <input
                   type="file"
                   accept="video/*"
-                  onChange={handleSelectVideo}
+                  onChange={handleSelectVideos}
+                  multiple
                   style={{ display: "none" }}
                   id="video-input"
                 />
@@ -125,17 +213,21 @@ const CreatePostModal = ({ handleClose, open }) => {
                 <span>Video</span>
               </div>
             </div>
-            {selectedImage && (
-              <div>
-                <img className="h-[10rem]" src={selectedImage} alt="" />
+            <div className="flex mt-5"> 
+            {selectedImages.map((imageUrl, index) => (
+              <div key={index} className="mr-2">
+                <img className="h-[10rem]" src={imageUrl} alt="" />
               </div>
-            )}
-            {selectedVideo && (
-              <div>
-                <video className="h-[10rem]" src={selectedVideo} alt="" />
+            ))}
+
+            {selectedVideos.map((videoUrl, index) => (
+              <div key={index} className="mr-2">
+                <video controls className="h-[10rem]" src={videoUrl} alt="" />
               </div>
-            )}
-            <div className="flex w-full justify-end">
+            ))}
+            </div>
+
+            <div className="flex w-full justify-end mt-2">
               <Button
                 variant="contained"
                 type="submit"
