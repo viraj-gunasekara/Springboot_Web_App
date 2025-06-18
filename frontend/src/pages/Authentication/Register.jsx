@@ -4,6 +4,8 @@ import { TextField, Button, InputAdornment, IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { registerUserAction }  from "../../Redux/Auth/auth.action.js"
 
 const initialValues = { firstName:"", lastName:"", email: "", password: "" };
 const validationSchema = Yup.object().shape({
@@ -18,10 +20,12 @@ const validationSchema = Yup.object().shape({
 const Register = () => {
   // const [formValue, setFormValue] = useState();
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch=useDispatch();
   const navigate=useNavigate();
 
   const handleSubmit = (values) => {
     console.log("handle submit", values);
+    dispatch(registerUserAction({data:values}));
   };
 
   const togglePasswordVisibility = () => {
