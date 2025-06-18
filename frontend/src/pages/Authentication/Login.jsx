@@ -4,7 +4,9 @@ import { TextField, Button, InputAdornment, IconButton } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-
+import { useDispatch } from 'react-redux';
+import { loginUserAction }  from "../../Redux/Auth/auth.action.js"
+ 
 const initialValues = { email: "", password: "" };
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -16,11 +18,13 @@ const validationSchema = Yup.object().shape({
 const Login = () => {
   // const [formValue, setFormValue] = useState();
   const [showPassword, setShowPassword] = useState(false);
-  // const dispatch=useDispatch();
+  const dispatch=useDispatch();
   const navigate=useNavigate();
+
 
   const handleSubmit = (values) => {
     console.log("handle submit", values);
+    dispatch(loginUserAction({data:values}));
   };
 
   const togglePasswordVisibility = () => {
