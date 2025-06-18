@@ -148,15 +148,19 @@ const CreatePostModal = ({ handleClose, open }) => {
       open={open}
     //   onClose={handleClose}
     onClose={() => {
-        if (
-          (selectedImages.length > 0 || selectedVideos.length > 0) &&
-          window.confirm(
-            "You have unsaved uploads. Are you sure you want to discard them?"
-          )
-        ) {
-          handleClose();
-        }
-      }}
+      if (
+        selectedImages.length === 0 &&
+        selectedVideos.length === 0
+      ) {
+        handleClose();
+      } else if (
+        window.confirm(
+          "You have unsaved uploads. Are you sure you want to discard them?"
+        )
+      ) {
+        handleClose();
+      }
+    }}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
