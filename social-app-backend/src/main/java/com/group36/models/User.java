@@ -1,10 +1,12 @@
 package com.group36.models;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -13,6 +15,7 @@ import jakarta.persistence.Table;
 public class User {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
 	private String firstName;
@@ -23,7 +26,10 @@ public class User {
 
 	private List<Integer> followers = new ArrayList<>();
 	private List<Integer> followings = new ArrayList<>();
-
+	
+	private List<Post> savedPosts=new ArrayList<>();
+			
+			
 	public User() {
 		// TODO Auto-generated constructor stub
 	}
@@ -42,6 +48,14 @@ public class User {
 
 	public List<Integer> getFollowers() {
 		return followers;
+	}
+
+	public List<Post> getSavedPosts() {
+		return savedPosts;
+	}
+
+	public void setSavedPosts(List<Post> savedPosts) {
+		this.savedPosts = savedPosts;
 	}
 
 	public void setFollowers(List<Integer> followers) {
