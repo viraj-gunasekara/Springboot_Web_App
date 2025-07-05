@@ -37,8 +37,8 @@ public class PostServiceImplementation implements PostService{
 		newPost.setVideo(post.getVideo());
 		newPost.setUser(user);
 		
-		return newPost;
-	}
+		return postRepository.save(newPost);
+		}
 
 	@Override
 	public String deletePost(Integer postId, Integer userId) throws Exception {
@@ -83,10 +83,12 @@ public class PostServiceImplementation implements PostService{
 		Post post=findPostById(postId);
 		User user=userService.findUserById(userId);
 		
-		if (user.getSavedPosts().add(post)) {
-			user.getSavedPosts().remove(post);
+		if (user.getSavedPost().contains(post)) {
+			user.getSavedPost().remove(post);
 			
-		} else user.getSavedPosts().add(post);
+		} else {
+			user.getSavedPost().add(post);
+		}
 		userRepository.save(user);
 		
 		return post;
