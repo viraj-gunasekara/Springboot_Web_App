@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.group36.config.JwtProvider;
 import com.group36.models.User;
 import com.group36.repository.UserRepository;
 
@@ -92,6 +93,14 @@ public class UserServiceImplementation implements UserService {
 	public List<User> searchUser(String query) {
 		
 		return userRepository.searchUser(query);
+	}
+
+	@Override
+	public User findUserByJwt(String jwt) {
+
+		String email= JwtProvider.getEmailFromJwtToken(jwt);
+		User user=userRepository.findByEmail(email);
+		return user;
 	}
 
 }

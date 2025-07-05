@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.service.annotation.PutExchange;
@@ -67,7 +68,16 @@ public class UserController {
 
 		return users;
 	}
-
+	
+	@GetMapping("/api/users/profile")
+	public User getUserFromToken(@RequestHeader("Authorization")String jwt) {
+		
+		User user=userService.findUserByJwt(jwt);
+		
+		user.setPassword(null);
+		
+		return user;
+	}
 //delete user-------------------------------------------------------
 //	@DeleteMapping("/users/{userId}")
 //	public String deleteUser(@PathVariable("userId") Integer userId) throws Exception {
