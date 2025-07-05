@@ -1,6 +1,8 @@
 package com.group36.config;
 
 import java.io.IOException;
+
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,15 +34,12 @@ public class jwtValidator extends OncePerRequestFilter {
 				
 				String email=JwtProvider.getEmailFromJwtToken(jwt);
 				List<GrantedAuthority>authorities=new ArrayList<>();
-				Authentication authentication=new UsernamePasswordAuthenticationToken(email, authorities);
+				Authentication authentication=new UsernamePasswordAuthenticationToken(email, null, authorities);
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 
 			} catch (Exception e) {   
 				throw new BadCredentialsException("Invalid token ....");
 			}
-		}
-		else {
-			throw new BadCredentialsException("please provide a valid token");
 		}
 		
 		filterChain.doFilter(request, response);

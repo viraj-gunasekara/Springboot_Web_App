@@ -17,14 +17,19 @@ public class AppConfig {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-		http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+		http.sessionManagement(management -> management
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(
-						Authorize -> Authorize.requestMatchers("/api/**").authenticated().anyRequest().permitAll())
-				.addFilterBefore(new jwtValidator(), BasicAuthenticationFilter.class).csrf(csrf -> csrf.disable());
+						Authorize -> Authorize.requestMatchers("/api/**")
+						.authenticated()
+						.anyRequest().permitAll())
+				.addFilterBefore(new jwtValidator(), BasicAuthenticationFilter
+						.class)
+				.csrf(csrf -> csrf.disable());
 
 		return http.build();
 	}
-	
+
 	@Bean
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();

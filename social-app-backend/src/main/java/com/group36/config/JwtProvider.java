@@ -2,6 +2,8 @@ package com.group36.config;
 
 import java.util.Date;
 
+
+
 import javax.crypto.SecretKey;
 
 import org.springframework.security.core.Authentication; 
@@ -17,7 +19,7 @@ public class JwtProvider {
 	public static String generateToken(Authentication auth) {
 		
 		String jwt = Jwts.builder()
-				.setIssuer("group36").setIssuedAt(new Date())
+				.setIssuer("VirajSg").setIssuedAt(new Date())
 				.setExpiration(new Date(new Date().getTime()+86400000))
 				.claim("email", auth.getName())
 				.signWith(key)
