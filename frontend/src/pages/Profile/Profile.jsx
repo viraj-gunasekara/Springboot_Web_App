@@ -47,7 +47,7 @@ const Profile = () => {
           <Avatar
             className="transform -translate-y-24"
             sx={{ width: "10rem", height: "10rem", border:"4px solid white" }}
-            src="https://images.pexels.com/photos/1431282/pexels-photo-1431282.jpeg?auto=compress&cs=tinysrgb&w=600"
+            src={auth.user?.userImage}
           />
 
           {true ? (

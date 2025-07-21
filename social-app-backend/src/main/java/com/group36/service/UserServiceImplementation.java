@@ -84,6 +84,16 @@ public class UserServiceImplementation implements UserService {
 		if (user.getEmail() != null) {
 			oldUser.setEmail(user.getEmail());
 		}
+		if (user.getBio() != null) {
+			oldUser.setBio(user.getBio());
+		}
+		if (user.getUserImage() != null) {
+			oldUser.setUserImage(user.getUserImage());
+		}
+		if (user.getUserBanner() != null) {
+			oldUser.setUserBanner(user.getUserBanner());
+		}
+		
 
 		User updateUser = userRepository.save(oldUser);
 
