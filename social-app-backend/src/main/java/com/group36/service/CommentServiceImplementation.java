@@ -40,6 +40,7 @@ public class CommentServiceImplementation implements CommentService{
 		Comment savedComment=commentRepository.save(comment);
 		
 		post.getComments().add(savedComment);
+		postRepository.save(post);
 		
 		return savedComment;
 	}
