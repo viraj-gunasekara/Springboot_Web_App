@@ -7,10 +7,12 @@ import {
   TextField,
   IconButton,
 } from "@mui/material";
-// import { updateProfileAction } from "../../Redux/Auth/auth.action";
+import { updateProfileAction } from "../../Redux/Auth/auth.action";
 import { useFormik } from "formik";
 import CloseIcon from "@mui/icons-material/Close";
-// import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
+import { uploadToCloudinary } from "../../utils/uploadToCloudinary";
+import { useSelector } from "react-redux";
 
 const style = {
   position: "absolute",
@@ -26,23 +28,38 @@ const style = {
   borderRadius: 3,
 };
 
-export default function ProfileModal({ open, handleClose }) {
-  //   const dispatch=useDispatch();
+export default function ProfileModal({ open, handleClose, firstName, lastName }) {
+    const dispatch=useDispatch();
+    const [selectedImage, setSelectedImage]=React.useState("");
+    const {auth} = useSelector(store=>store);
 
-  //   const handleSubmit = (values) => {
-  //     console.log("values", values);
-  //   };
+    // State to manage uploading status
+  const [uploading, setUploading] = React.useState(false);
+
+    const handleSubmit = (values) => {
+      console.log("values", values);
+    };
 
   const formik = useFormik({
     initialValues: {
-      firstName: "",
-      lastName: "",
+      firstName: firstName || "",
+      lastName: lastName || "",
     },
-    // onSubmit:(values,)=>{
-    //     console.log("values",values)
-    //     dispatch(updateProfileAction(values))
-    // },
+    onSubmit:(values,)=>{ 
+        console.log("values",values)
+        dispatch(updateProfileAction(values))
+        setSelectedImage("");
+    },
   });
+
+  const handleImageChange = async(event)=>{
+    setUploading(true);
+    const {name} =event.target;
+    const file = await uploadToCloudinary(event.target.files[0], "image");
+    formik.setFieldValue(name, file);
+    setSelectedImage(file);
+    setUploading(false);
+  };
 
   return (
     <div>
@@ -79,8 +96,17 @@ export default function ProfileModal({ open, handleClose }) {
                     height: "10rem",
                     border: "4px solid white",
                   }}
-                  src="https://images.pexels.com/photos/1431282/pexels-photo-1431282.jpeg?auto=compress&cs=tinysrgb&w=600"
+                  src={ selectedImage || auth.user?.userImage || "https://images.pexels.com/photos/1431282/pexels-photo-1431282.jpeg?auto=compress&cs=tinysrgb&w=600"
+                  }
                 />
+
+                <input
+                className="mt-[255px] absolute top-0 left-0 w-[10rem] h-50 opacity-50 cursor-pointer"
+                onChange={handleImageChange}
+                name="userImage"
+                type="file"
+                />
+                
               </div>
             </div>
             <div className="space-y-3 ">
@@ -89,7 +115,7 @@ export default function ProfileModal({ open, handleClose }) {
                 id="firstName"
                 name="firstName"
                 label="First Name"
-                // value={formik.values.firstName}
+                value={formik.values.firstName}
                 onChange={formik.handleChange}
               />
               <TextField
@@ -97,7 +123,7 @@ export default function ProfileModal({ open, handleClose }) {
                 id="lastName"
                 name="lastName"
                 label="Last Name"
-                // value={formik.values.lastName}
+                value={formik.values.lastName}
                 onChange={formik.handleChange}
               />
             </div>

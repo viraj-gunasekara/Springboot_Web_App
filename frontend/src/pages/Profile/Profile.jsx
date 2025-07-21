@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-// import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Avatar, Button, Tabs, Tab, Box, Card } from "@mui/material";
 import PostCard from "../../components/Post/PostCard";
 import ProfileModal from "./ProfileModal";
 import UserStatusCard from "../../components/WorkoutStatus/UserStatusCard";
+import { useSelector } from "react-redux";
+import { store } from "../../Redux/store";
 
 const Profile = () => {
-  // const { id } = useParams();
+  const {auth} = useSelector(store=>store);
+  const { id } = useParams();
   const [open, setOpen] = useState(false);
   const handleOpenProfileModal = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -28,6 +31,8 @@ const Profile = () => {
     setValue(newValue);
   };
 
+  
+
   return (
     <Card className="my-10 w-[70%]">
       <div className="rounded-md overflow-hidden">
@@ -42,7 +47,7 @@ const Profile = () => {
           <Avatar
             className="transform -translate-y-24"
             sx={{ width: "10rem", height: "10rem", border:"4px solid white" }}
-            src="https://images.pexels.com/photos/1431282/pexels-photo-1431282.jpeg?auto=compress&cs=tinysrgb&w=600"
+            src={auth.user?.userImage}
           />
 
           {true ? (
@@ -61,8 +66,8 @@ const Profile = () => {
         </div>
         <div className="pl-7">
           <div>
-            <h1 className=" font-bold text-xl">V.S. Gunasekara</h1>
-            <p>@it21320378</p>
+            <h1 className=" font-bold text-xl">{auth.user?.firstName +" "+ auth.user?.lastName}</h1>
+            <p>@{auth.user?.firstName?.toLowerCase() +"_"+ auth.user?.lastName?.toLowerCase()}</p>
           </div>
           <div className="flex gap-5 items-center py-3">
             <span>41 posts</span>
@@ -121,7 +126,12 @@ const Profile = () => {
       </div>
       {/* profileModel */}
       <section>
-        <ProfileModal open={open} handleClose={handleClose} />
+        <ProfileModal 
+        open={open} 
+        handleClose={handleClose} 
+        firstName={auth.user?.firstName}
+        lastName={auth.user?.lastName}
+        />
       </section>
     </Card>
   );

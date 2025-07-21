@@ -26,6 +26,10 @@ public class User {
 
 	private String email;
 	private String password;
+	
+	private String userImage;
+	private String userBanner;
+	private String bio;
 
 	private List<Integer> followers = new ArrayList<>();
 	private List<Integer> followings = new ArrayList<>();
@@ -39,19 +43,46 @@ public class User {
 		// TODO Auto-generated constructor stub
 	}
 
-
-	public User(Integer id, String firstName, String lastName, String email, String password, List<Integer> followers,
-			List<Integer> followings) {
+	public User(Integer id, String firstName, String lastName, String email, String password, String userImage,
+			String userBanner, String bio, List<Integer> followers, List<Integer> followings, List<Post> savedPost) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
+		this.userImage = userImage;
+		this.userBanner = userBanner;
+		this.bio = bio;
 		this.followers = followers;
 		this.followings = followings;
+		this.savedPost = savedPost;
 	}
 
+
+	public String getUserImage() {
+		return userImage;
+	}
+
+	public void setUserImage(String userImage) {
+		this.userImage = userImage;
+	}
+
+	public String getUserBanner() {
+		return userBanner;
+	}
+
+	public void setUserBanner(String userBanner) {
+		this.userBanner = userBanner;
+	}
+
+	public String getBio() {
+		return bio;
+	}
+
+	public void setBio(String bio) {
+		this.bio = bio;
+	}
 
 	public Integer getId() {
 		return id;
