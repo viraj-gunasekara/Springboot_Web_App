@@ -33,15 +33,17 @@ public class Post {
 	@ManyToMany
 	private List<User> liked=new ArrayList<>();
 	
+	@OneToMany
+	private List<Comment> comments=new ArrayList<>();
+	
 	
 	public Post() {
 		// TODO Auto-generated constructor stub
 	}
 
 
-
 	public Post(Integer id, String caption, String image, String video, User user, LocalDateTime createdAt,
-			List<User> liked) {
+			List<User> liked, List<Comment> comments) {
 		super();
 		Id = id;
 		this.caption = caption;
@@ -50,8 +52,8 @@ public class Post {
 		this.user = user;
 		this.createdAt = createdAt;
 		this.liked = liked;
+		this.comments = comments;
 	}
-
 
 
 	public List<User> getLiked() {
@@ -113,7 +115,15 @@ public class Post {
 	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
-	
-	
- 
+
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+	 
 }
