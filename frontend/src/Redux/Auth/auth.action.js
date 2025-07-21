@@ -15,7 +15,7 @@ export const loginUserAction = (loginData) => async (dispatch) => {
       // loginData.navigate //redirect the user to another page upon successful login
     }
 
-    console.log("login success",data)
+    console.log("login success--------",data)
 
     dispatch({ type: LOGIN_SUCCESS, payload: data.jwt });
   } catch (error) {
@@ -38,7 +38,7 @@ export const registerUserAction = (loginData) => async (dispatch) => {
         // loginData.navigate //redirect the user to another page upon successful registration
       }
 
-      console.log("register success",data)
+      console.log("register success------",data)
   
       dispatch({ type: LOGIN_SUCCESS, payload: data.jwt });
 
