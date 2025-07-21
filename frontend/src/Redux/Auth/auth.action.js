@@ -1,6 +1,6 @@
 import axios from "axios";
-import { API_BASE_URL } from "../../config/api";
-import { LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS } from "./auth.actionType";
+import { API_BASE_URL, api } from "../../config/api";
+import { GET_PROFILE_FAILURE, GET_PROFILE_REQUEST, GET_PROFILE_SUCCESS, LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT, UPDATE_PROFILE_FAILURE, UPDATE_PROFILE_REQUEST, UPDATE_PROFILE_SUCCESS } from "./auth.actionType";
 
 export const loginUserAction = (loginData) => async (dispatch) => {
   dispatch({ type: LOGIN_REQUEST });
@@ -10,9 +10,9 @@ export const loginUserAction = (loginData) => async (dispatch) => {
       loginData.data
     );
 
-    if (data.jwt) {
-      localStorage.setItem("jwt", data.jwt);
-      // loginData.navigate //redirect the user to another page upon successful login
+    if (data.token) {
+      localStorage.setItem("jwt", data.token);
+      // loginData.navigate('/Home')
     }
 
     console.log("login success--------",data)
@@ -33,9 +33,9 @@ export const registerUserAction = (loginData) => async (dispatch) => {
         loginData.data
       );
   
-      if (data.jwt) {
-        localStorage.setItem("jwt", data.jwt);
-        // loginData.navigate //redirect the user to another page upon successful registration
+      if (data.token) {
+        localStorage.setItem("jwt", data.token);
+        // loginData.navigate('/Login')
       }
 
       console.log("register success------",data)
@@ -47,3 +47,51 @@ export const registerUserAction = (loginData) => async (dispatch) => {
       dispatch({ type: LOGIN_FAILURE, payload: error });
     }
   };
+
+
+  export const getProfileAction = (jwt) => async (dispatch) => {
+    dispatch({ type: GET_PROFILE_REQUEST });
+    try {
+      const { data } = await axios.get(
+        `${API_BASE_URL}/api/users/profile`,
+        {
+          headers:{
+            Authorization:`Bearer ${jwt}`,
+          },
+        }
+
+      );
+  
+      console.log("profile ----",data)
+  
+      dispatch({ type: GET_PROFILE_SUCCESS, payload: data });
+
+    } catch (error) {
+      console.log("-----", error);
+      dispatch({ type: GET_PROFILE_FAILURE, payload: error });
+    }
+  };
+
+
+  export const updateProfileAction = (reqData) => async (dispatch) => {
+    dispatch({ type: UPDATE_PROFILE_REQUEST });
+    try {
+      const { data } = await api.post(
+        `${API_BASE_URL}/api/users`, reqData
+      );
+  
+      console.log("update profile ----",data)
+  
+      dispatch({ type: UPDATE_PROFILE_SUCCESS, payload: data });
+
+    } catch (error) {
+      console.log("-----", error);
+      dispatch({ type: UPDATE_PROFILE_FAILURE, payload: error });
+    }
+  };
+
+export const logout=()=>async(dispatch)=>{
+    localStorage.removeItem("jwt")
+
+    dispatch({type:LOGOUT, payload:null})
+};

@@ -3,22 +3,30 @@ import { navigationMenu } from "./SidebarNavigation";
 import { Divider, Avatar, Button, Menu, MenuItem, Card } from "@mui/material";
 import MoreVertTwoToneIcon from "@mui/icons-material/MoreVertTwoTone";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { store } from "../../Redux/store";
+import { logout } from "../../Redux/Auth/auth.action";
 
 const Sidebar = () => {
+  const {auth} = useSelector(store=>store);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
+  const dispatch=useDispatch();
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
+    dispatch(logout());
+    navigate("/");
   };
 
   const handleNavigate = (item) => {
     if (item.title === "Profile") {
-      // navigate(`/profile/${auth.user?.id}`)
-      navigate(`/profile/:id`);
+      navigate(`/profile/${auth.user?.id}`);
+      // navigate(`/profile/:id`);
     } else {
       navigate(item.path);
     }
@@ -50,10 +58,10 @@ const Sidebar = () => {
             <Avatar src="https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_1280.png" />
             <div>
               <p className="font-bold" style={{ fontSize: "14px" }}>
-                PAF GROUP 36
+                {auth.user?.firstName +" "+ auth.user?.lastName}
               </p>
               <p className="opacity-70" style={{ fontSize: "13px" }}>
-                @reg_we_36
+                @{auth.user?.firstName?.toLowerCase() +"_"+ auth.user?.lastName?.toLowerCase()}
               </p>
             </div>
           </div>
