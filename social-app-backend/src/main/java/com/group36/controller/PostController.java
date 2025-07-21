@@ -11,11 +11,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.group36.models.Post;
+import com.group36.models.User;
 import com.group36.response.ApiResponse;
 import com.group36.service.PostService;
+import com.group36.service.UserService;
 
 @RestController
 public class PostController {
@@ -23,11 +26,14 @@ public class PostController {
 	@Autowired
 	PostService postService;
 	
+	@Autowired
+	UserService userService;
 	
-	@PostMapping("/posts/user/{userId}")
-	public ResponseEntity<Post> createPost(@RequestBody Post post,@PathVariable Integer userId) throws Exception{
+	@PostMapping("/api/posts")
+	public ResponseEntity<Post> createPost(@RequestHeader("Authorization")String jwt, @RequestBody Post post) throws Exception{
 		
-		Post createdPost=postService.createNewPost(post, userId);
+		User reqUser = userService.findUserByJwt(jwt);
+		Post createdPost=postService.createNewPost(post, reqUser.getId());
 		
 		return new ResponseEntity<>(createdPost,HttpStatus.ACCEPTED);
 	}
