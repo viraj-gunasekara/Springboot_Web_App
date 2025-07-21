@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.service.annotation.PutExchange;
 
+import com.group36.exceptions.UserException;
 import com.group36.models.User;
 import com.group36.repository.UserRepository;
 import com.group36.service.UserService;
@@ -38,14 +39,14 @@ public class UserController {
 	}
 
 	@GetMapping("/api/users/{userId}")
-	public User getUserById(@PathVariable("userId") Integer id) throws Exception {
+	public User getUserById(@PathVariable("userId") Integer id) throws UserException {
 
 		User user = userService.findUserById(id);
 		return user;
 	}
 
 	@PutMapping("/api/users")
-	public User updateUser(@RequestHeader("Authorization")String jwt, @RequestBody User user) throws Exception {
+	public User updateUser(@RequestHeader("Authorization")String jwt, @RequestBody User user) throws UserException {
 
 		User reqUser= userService.findUserByJwt(jwt);
 		User updatedUser = userService.updateUser(user, reqUser.getId());
@@ -55,7 +56,7 @@ public class UserController {
 	}
 
 	@PutMapping("/api/users/follow/{userId2}")
-	public User followUserHandler(@RequestHeader("Authorization")String jwt, @PathVariable Integer userId2) throws Exception {
+	public User followUserHandler(@RequestHeader("Authorization")String jwt, @PathVariable Integer userId2) throws UserException {
 
 		User reqUser = userService.findUserByJwt(jwt);
 		User user = userService.followUser(reqUser.getId(), userId2);
@@ -82,12 +83,12 @@ public class UserController {
 	}
 //delete user-------------------------------------------------------
 //	@DeleteMapping("/users/{userId}")
-//	public String deleteUser(@PathVariable("userId") Integer userId) throws Exception {
+//	public String deleteUser(@PathVariable("userId") Integer userId) throws UserException {
 //		
 //		Optional<User> user=userRepository.findById(userId);
 //		
 //		if (user.isEmpty()) {
-//			throw new Exception("user not exist with id "+userId);
+//			throw new UserException("user not exist with id "+userId);
 //		}
 //		
 //		userRepository.delete(user.get());
