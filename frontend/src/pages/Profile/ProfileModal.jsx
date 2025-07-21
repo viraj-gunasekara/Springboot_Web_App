@@ -38,7 +38,7 @@ export default function ProfileModal({ open, handleClose, firstName, lastName })
       firstName: firstName || "",
       lastName: lastName || "",
     },
-    onSubmit:(values,)=>{
+    onSubmit:(values,)=>{ 
         console.log("values",values)
         dispatch(updateProfileAction(values))
     },
